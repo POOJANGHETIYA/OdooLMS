@@ -462,7 +462,8 @@ exports.getDashboardData = async (req, res) => {
 
       const { data: usersData, error: usersError } = await supabase
         .from("User")
-        .select("*");
+        .select("*")
+        .eq("roleId", 3);
   
       const totalBooks = booksData.length;
       const totalBorrowings = borrowingsData.length;
