@@ -414,17 +414,15 @@ exports.returnBook = async (req, res) => {
     const { error: lateFeeError } = await supabase
       .from("Borrowings")
       .update({ lateFees })
-      .eq("isbn", isbn)
-      .eq("userEmail", email);
+      .eq("isbn", isbn);
 
     if (lateFeeError) throw lateFeeError;
 
     const updateBorrowingResult = await supabase
       .from("Borrowings")
       .update({ returnDate: returnDate })
-      .eq("isbn", isbn)
-      .eq("userEmail", email); // Assuming email is retrieved somewhere
-
+      .eq("isbn", isbn); 
+      
     if (updateBorrowingResult.error) {
       throw updateBorrowingResult.error;
     }
