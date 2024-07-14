@@ -422,7 +422,7 @@ exports.returnBook = async (req, res) => {
       .from("Borrowings")
       .update({ returnDate: returnDate })
       .eq("isbn", isbn); 
-      
+
     if (updateBorrowingResult.error) {
       throw updateBorrowingResult.error;
     }
@@ -446,3 +446,36 @@ exports.getAvailablebooks = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+exports.getDashboardData = async (req, res) => {
+    // get dashboard data for analytics
+    try {
+      const { data: booksData, error: booksError } = await supabase
+        .from("Books")
+        .select("*");
+      if (booksError) throw booksError;
+  
+      const { data: borrowingsData, error: borrowingsError } = await supabase
+        .from("Borrowings")
+        .select("*");
+      if (borrowingsError) throw borrowingsError;
+
+      const { data: usersData, error: usersError } = await supabase
+        .from("User")
+        .select("*");
+  
+      const totalBooks = booksData.length;
+      const totalBorrowings = borrowingsData.length;
+      const totalUsers = usersData.length;
+
+      const response = {
+        totalBooks,
+        totalBorrowings,
+        totalUsers,
+      };
+  
+      return res.status(200).json({ success: true, data: response });
+    } catch (error) {
+      return res.status(500).json({ success: false, error: error.message });
+    }
+}

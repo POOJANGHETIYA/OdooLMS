@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { routes } = require("../app");
 const {
   getBooks,
   addBook,
@@ -8,6 +9,7 @@ const {
   issueBook,
   returnBook,
   getAvailablebooks,
+  getDashboardData,
 } = require("../controllers/bookController");
 
 router.get("/", async (req, res) => {
@@ -22,5 +24,6 @@ router.get("/getBook/:isbn", getBook);
 router.post("/updateBook/:isbn", updateBook);
 router.post("/issueBook", issueBook);
 router.post("/returnBook", returnBook);
+router.get("/getDashboard", getDashboardData);
 
 module.exports = router;
